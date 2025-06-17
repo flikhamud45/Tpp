@@ -3,19 +3,22 @@
 
 #include <iostream>
 
+enum error_code
+{
+    INVALID_INPUT
+};
+
 int main()
 {
 
     std::cout << "Enter number: ";
-    int num;
-    std::cin >> num;
-    if (num < 0)
+    double num;
+    if (!(std::cin >> num) || num < 0)
     {
-        std::cout << "Invalid input!\n";
-        return 1;
+        throw error_code::INVALID_INPUT;
     }
     std::cout << "The root of " << num << " is " << std::sqrt(num);
-
+    return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
