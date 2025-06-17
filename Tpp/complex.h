@@ -18,19 +18,19 @@ public:
 
     Complex operator*(Complex num);
 
-    double get_real();
+    double getReal();
 
-    double get_imaginary();
+    double getImaginary();
 
-    void set_real(double a);
+    void setReal(double a);
 
-    void set_imaginary(double b);
+    void setImaginary(double b);
 
     // print the number
     void print();
 
 private:
-    double real;
-    double imaginary;
+    double m_real;
+    double m_imaginary;
     
 };

@@ -1,16 +1,14 @@
-#include "complex.h"
 #include <iostream>
+#include "complex.h"
 
 Complex::Complex() : Complex(0, 0)
 {
-    
+    // left blank intentionally
 }
-
-
 
 Complex::Complex(double a, double b) : real(a), imaginary(b)
 {
-    
+    // left blank intentionally   
 }
 
 bool Complex::operator==(Complex num)
@@ -18,22 +16,22 @@ bool Complex::operator==(Complex num)
     return real == num.real && imaginary == num.imaginary;
 }
 
-double Complex::get_imaginary()
+double Complex::getImaginary()
 {
     return imaginary;
 }
 
-double Complex::get_real()
+double Complex::getReal()
 {
     return real;
 }
 
-void Complex::set_real(double a)
+void Complex::setReal(double a)
 {
     real = a;
 }
 
-void Complex::set_imaginary(double b)
+void Complex::setImaginary(double b)
 {
     imaginary = b;
 }

@@ -1,6 +1,6 @@
 #pragma once
-#include "complex.h"
 #include <iostream>
+#include "complex.h"
 
 int main()
 {
