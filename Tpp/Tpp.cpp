@@ -10,24 +10,26 @@ enum error_code
 
 int main()
 {
-
-    std::cout << "Enter number: ";
-    double num;
-    if (!(std::cin >> num) || num < 0)
+    try
     {
-        throw error_code::INVALID_INPUT;
+        std::cout << "Enter number: ";
+        double num;
+        if (!(std::cin >> num) || num < 0)
+        {
+            throw error_code::INVALID_INPUT;
+        }
+        std::cout << "The root of " << num << " is " << std::sqrt(num);
+        return 0;
     }
-    std::cout << "The root of " << num << " is " << std::sqrt(num);
-    return 0;
+    catch (error_code error)
+    {
+        if (error == error_code::INVALID_INPUT)
+        {
+            std::cout << "Invalid input!";
+        }
+        else
+        {
+            std::cout << "Unknown error!";
+        }
+    }
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
