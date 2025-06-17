@@ -4,4 +4,4 @@ IndentWidth: 4
 ---
 Language: Cpp
 DerivePointerAligment: false
-PointerAligment: Left
+PointerAlignment: Left
