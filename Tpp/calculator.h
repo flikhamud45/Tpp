@@ -6,7 +6,7 @@ enum calculate_error
 
 class Calculator
 {
-public:
+private:
     // return the sum of num1 and num2
     double add(double num1, double num2);
 
@@ -19,6 +19,7 @@ public:
     // return the division of num1 and num2
     double divide(double num1, double num2);
 
+public:
     // return num1 opp num2 for opp = "*", "/", "+", "-"
     double calculate(double num1, char op, double num2);
 };
