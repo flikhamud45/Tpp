@@ -6,52 +6,52 @@ Complex::Complex() : Complex(0, 0)
     // left blank intentionally
 }
 
-Complex::Complex(double a, double b) : real(a), imaginary(b)
+Complex::Complex(double a, double b) : m_real(a), m_imaginary(b)
 {
     // left blank intentionally   
 }
 
 bool Complex::operator==(Complex num)
 {
-    return real == num.real && imaginary == num.imaginary;
+    return m_real == num.m_real && m_imaginary == num.m_imaginary;
 }
 
 double Complex::getImaginary()
 {
-    return imaginary;
+    return m_imaginary;
 }
 
 double Complex::getReal()
 {
-    return real;
+    return m_real;
 }
 
 void Complex::setReal(double a)
 {
-    real = a;
+    m_real = a;
 }
 
 void Complex::setImaginary(double b)
 {
-    imaginary = b;
+    m_imaginary = b;
 }
 
 Complex Complex::operator+(Complex num)
 {
-    return Complex(real + num.real, imaginary + num.imaginary);
+    return Complex(m_real + num.m_real, m_imaginary + num.m_imaginary);
 }
 
 Complex Complex::operator-(Complex num)
 {
-    return Complex(real - num.real, imaginary - num.imaginary);
+    return Complex(m_real - num.m_real, m_imaginary - num.m_imaginary);
 }
 
 Complex Complex::operator*(Complex num)
 {
-    return Complex((real * num.real) - (imaginary * num.imaginary), (real * num.imaginary + imaginary * num.real));
+    return Complex((m_real * num.m_real) - (m_imaginary * num.m_imaginary), (m_real * num.m_imaginary + m_imaginary * num.m_real));
 }
 
 void Complex::print()
 {
-    std::cout << real << " + " << imaginary << "i\n";
+    std::cout << m_real << " + " << m_imaginary << "i\n";
 }
