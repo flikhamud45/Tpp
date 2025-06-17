@@ -5,7 +5,17 @@
 
 int main()
 {
-    std::cout << "Hello World!\n";
+
+    std::cout << "Enter number: ";
+    int num;
+    std::cin >> num;
+    if (num < 0)
+    {
+        std::cout << "Invalid input!\n";
+        return 1;
+    }
+    std::cout << "The root of " << num << " is " << std::sqrt(num);
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
