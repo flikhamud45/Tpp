@@ -1,7 +1,5 @@
 #include "primes.h"
 
-#include <regex>
-
 bool is_prime(int num)
 {
     // return if the given number is prime

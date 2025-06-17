@@ -1,6 +1,3 @@
-// Tpp.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #pragma once
 #include "primes.h"
 #include <iostream>
