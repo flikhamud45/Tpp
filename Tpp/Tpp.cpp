@@ -1,34 +1,9 @@
 // Tpp.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#pragma once
+#include "primes.h"
 #include <iostream>
-
-bool is_prime(int num)
-{
-    for (int i = 2; i <= std::sqrt(num); i++)
-    {
-        if (num % i == 0)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-void get_primes(int arr[], int num_of_primes)
-{
-    int i = 0;
-    int current_num = 1;
-    while (i < num_of_primes)
-    {
-        if (is_prime(current_num))
-        {
-            arr[i] = current_num;
-            i++;
-        }
-        current_num++;
-    }
-}
 
 
 int main()
