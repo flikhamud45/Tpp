@@ -3,9 +3,29 @@
 
 #include <iostream>
 
+bool is_prime(int num)
+{
+    for (int i = 2; i <= std::sqrt(num); i++)
+    {
+        if (num % i == 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 int main()
 {
-    std::cout << "Hello World!\n";
+    int num = 9;
+    if (is_prime(num))
+    {
+        std::cout << num << " is prime!";
+    }
+    else
+    {
+        std::cout << num << " is not prime!";
+    }
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
