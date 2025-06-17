@@ -1,11 +1,20 @@
 // Tpp.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
+#pragma once
 #include <iostream>
+#include "primes.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    int num = 9;
+    if (is_prime(num))
+    {
+        std::cout << num << " is prime!";
+    }
+    else
+    {
+        std::cout << num << " is not prime!";
+    }
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
