@@ -15,17 +15,31 @@ bool is_prime(int num)
     return true;
 }
 
+void get_primes(int arr[], int num_of_primes)
+{
+    int i = 0;
+    int current_num = 1;
+    while (i < num_of_primes)
+    {
+        if (is_prime(current_num))
+        {
+            arr[i] = current_num;
+            i++;
+        }
+        current_num++;
+    }
+}
+
+
 int main()
 {
-    int num = 9;
-    if (is_prime(num))
+    int arr[10];
+    get_primes(arr, 10);
+    for (int i = 0; i < 10; i++)
     {
-        std::cout << num << " is prime!";
+        std::cout << arr[i] << ", ";
     }
-    else
-    {
-        std::cout << num << " is not prime!";
-    }
+    std::cout << "\n";
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
