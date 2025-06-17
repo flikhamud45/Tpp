@@ -3,5 +3,5 @@ BasedOnStyle: Microsoft
 IndentWidth: 4
 ---
 Language: Cpp
-DerivePointerAligment: false
+DerivePointerAlignment: false
 PointerAlignment: Left
