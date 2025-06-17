@@ -4,6 +4,7 @@
 
 void print_mul_board()
 {
+    // print the mul board
     for (int i = MIN_MUL; i <= MAX_MUL; i++)
     {
         std::cout << SEP << i;
