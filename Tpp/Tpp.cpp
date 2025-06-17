@@ -19,7 +19,7 @@ int main()
             throw error_code::INVALID_INPUT;
         }
         std::cout << "The root of " << num << " is " << std::sqrt(num);
-        return 0;
+        
     }
     catch (error_code error)
     {
@@ -32,4 +32,5 @@ int main()
             std::cout << "Unknown error!";
         }
     }
+    return 0;
 }
