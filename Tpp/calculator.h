@@ -1,3 +1,9 @@
+enum calculate_error
+{
+    DIVISION_BY_ZERO,
+    INVALID_OPERATOR
+};
+
 class Calculator
 {
 public:
@@ -18,8 +24,3 @@ public:
 };
 
 
-enum calculate_error
-{
-    divission_by_zero,
-    invalid_operator
-};

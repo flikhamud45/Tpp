@@ -14,7 +14,7 @@ double Calculator::divide(double num1, double num2)
 {
     if (num2 == 0)
     {
-        throw calculate_error::divission_by_zero;
+        throw calculate_error::DIVISION_BY_ZERO;
     }
     return num1 / num2;
 }
@@ -41,7 +41,7 @@ double Calculator::calculate(double num1, char op, double num2)
         return divide(num1, num2);
         break;
     default:
-        throw calculate_error::invalid_operator;
+        throw calculate_error::INVALID_OPERATOR;
     }
 }
 
