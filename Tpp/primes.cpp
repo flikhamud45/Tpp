@@ -22,7 +22,7 @@ bool is_prime(int num)
     return true;
 }
 
-void get_primes(int arr[], int num_of_primes)
+void get_primes_arr(int arr[], int num_of_primes)
 {
     if (arr == nullptr)
     {

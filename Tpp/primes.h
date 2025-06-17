@@ -2,7 +2,7 @@
 bool is_prime(int num);
 
 // set num_of_primes primes in arr
-void get_primes(int arr[], int num_of_primes);
+void get_primes_arr(int arr[], int num_of_primes);
 
 enum error_type
 {
