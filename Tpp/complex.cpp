@@ -1,10 +1,6 @@
 #include <iostream>
 #include "complex.h"
 
-Complex::Complex() : Complex(0, 0)
-{
-    // left blank intentionally
-}
 
 Complex::Complex(double a, double b) : m_real(a), m_imaginary(b)
 {

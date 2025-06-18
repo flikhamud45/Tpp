@@ -1,14 +1,11 @@
-#include <string>
+#pragma once
 
 class Complex
 {
 public:
 
-    // init to 0
-    Complex();
-
     // init to a + bi
-    Complex(double a, double b);
+    Complex(double a = 0, double b = 0) ;
 
     bool operator==(Complex num);
 
