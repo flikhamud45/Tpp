@@ -9,7 +9,7 @@ int main()
     h1.add("2", &n2);
     std::cout << *static_cast<int*>(h1.get("1")) << *static_cast<int*>(h1.get("2")) << "\n";
     h1.pop("2");
-    std::cout << h1.is_exist("2") << "\n";
+    std::cout << h1.isIn("2") << "\n";
     std::cout << *static_cast<int*>(h1.get("1")) << "\n";
     HashTable h2{1000};
     h2.add("2", &n2);

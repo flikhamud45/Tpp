@@ -1,13 +1,14 @@
 #include "hashtable.h"
 
 #include <list>
+#include <vector>
 
 HashTable::HashTable(size_t table_size)
 {
-    m_arr = new node_t*[table_size];
+    m_arr = std::vector<std::list<std::pair<std::string, void*>>::iterator*>(table_size, nullptr);
     m_size = 0;
     m_table_size = table_size;
-    memset(m_arr, 0, table_size*sizeof(node_t*));
+    
 }
 
 HashTable::HashTable(const HashTable& h) : HashTable(h.m_table_size)
@@ -19,9 +20,7 @@ HashTable& HashTable::operator=(const HashTable& other)
 {
     m_keys_values.clear();
 
-    delete[] m_arr;
-    m_arr = new node_t*[other.m_table_size];
-    memset(m_arr, 0, sizeof(node_t*) * m_table_size);
+    m_arr = std::vector<std::list<std::pair<std::string, void*>>::iterator*>(other.m_table_size, nullptr);
     m_size = 0;
     m_table_size = other.m_table_size;
     *this += other;
@@ -32,74 +31,69 @@ HashTable& HashTable::operator=(const HashTable& other)
 
 HashTable::~HashTable()
 {
-    delete[] m_arr;
     // the linkedlist destructor gonna be called and delete everything :)
 
 }
 
 
-void HashTable::add(const char*  key, void* value)
+void HashTable::add(const std::string& key, void* value)
 {
-    std::pair<const char* , void*> *p = new std::pair<const char* , void*>(key, value);
-    node_t* n = m_keys_values.push(p);
-    m_arr[getIndex(key)] = n;
+    auto it = m_keys_values.insert(m_keys_values.begin(), std::pair<std::string, void*>(key, value));
+    auto pit = new std::list<std::pair<std::string, void*>>::iterator(it);
+    m_arr[getIndex(key)] = pit;
     m_size++;
 }
 
 // return the index in the arr from the key
-size_t HashTable::getIndex(const char*  key) const
+size_t HashTable::getIndex(const std::string&  key) const
 {
     return std::hash<std::string>{}(key) % m_table_size;
 }
 
-void HashTable::pop(const char*  key)
+void HashTable::pop(const std::string& key)
 {
     size_t index = getIndex(key);
-    node_t *n = m_arr[index];
-    if (n == nullptr)
+    auto pos = m_arr[index];
+    if (pos == nullptr)
     {
         throw hash_error::KEY_NOT_FOUND;
     }
-    m_keys_values.pop(n);
+    m_keys_values.erase(*pos);
     m_arr[index] = nullptr;
     m_size--;
     
 }
 
-void* HashTable::get(const char*  key) const
+void* HashTable::get(const std::string&  key) const
 {
     size_t index = getIndex(key);
-    node_t* n = m_arr[index];
-    if (n == nullptr)
+    auto pos = m_arr[index];
+    if (pos == nullptr)
     {
         throw hash_error::KEY_NOT_FOUND;
     }
-    std::pair<const char* , void*>* p = static_cast<std::pair<const char* , void*>*>(n->value);
-    return p->second;
+    std::pair<std::string, void*> p = **pos;
+    return p.second;
     
 }
 
-const char* HashTable::get_key(void* value) const
+const std::string HashTable::getKey(void* value) const
 {
-    node_t* curr = m_keys_values.getStart();
-    curr = curr->next;
-    while (curr != nullptr)
+    for (std::pair<std::string, void*> p : m_keys_values)
     {
-        std::pair<const char* , void*>* p = static_cast<std::pair<const char* , void*>*>(curr->value);
-        if (p->second == value)
+        if (p.second == value)
         {
-            return p->first;
+            return p.first;
         }
-        curr = curr->next;
     }
     throw hash_error::KEY_NOT_FOUND;
 }
 
-bool HashTable::is_exist(const char*  key) const
+bool HashTable::isIn(const char*  key) const
 {
     size_t index = getIndex(key);
-    node_t* n = m_arr[index];
-    return n != nullptr;
+    auto pos = m_arr[index];
+    return pos != nullptr;
 }
 
 size_t HashTable::getSize() const
@@ -117,13 +111,9 @@ HashTable HashTable::operator+(const HashTable &other) const
 
 void HashTable::operator+=(const HashTable &other)
 {
-    node_t *curr = other.m_keys_values.getStart();
-    curr = curr->next;
-    while (curr != nullptr)
+    for (auto p: other.m_keys_values)
     {
-        std::pair<const char* , void*>* p = static_cast<std::pair<const char* , void*>*>(curr->value);
-        add(p->first, p->second);
-        curr = curr->next;
+        add(p.first, p.second);
     }
 }
 
@@ -134,18 +124,13 @@ bool HashTable::operator==(const HashTable &other) const
         return false;
     }
 
-    node_t* curr = m_keys_values.getStart();
-    curr = curr->next;
-    while (curr != nullptr)
+    for (auto p: m_keys_values) 
     {
-        std::pair<const char* , void*>* p = static_cast<std::pair<const char* , void*>*>(curr->value);
-        if (other.get(p->first) != p->second)
+        if (other.get(p.first) != p.second)
         {
             return false;
         }
-        curr = curr->next;
     }
-
     return true;
 }
 
