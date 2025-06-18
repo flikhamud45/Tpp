@@ -5,7 +5,7 @@
 
 HashTable::HashTable(size_t table_size)
 {
-    m_arr = std::vector<std::list<std::pair<std::string, void*>>::iterator*>(table_size, nullptr);
+    m_arr = std::vector<std::list<std::list<std::pair<std::string, void*>>::iterator*>>(table_size);
     m_size = 0;
     m_table_size = table_size;
     
@@ -20,7 +20,7 @@ HashTable& HashTable::operator=(const HashTable& other)
 {
     m_keys_values.clear();
 
-    m_arr = std::vector<std::list<std::pair<std::string, void*>>::iterator*>(other.m_table_size, nullptr);
+    m_arr = std::vector<std::list<std::list<std::pair<std::string, void*>>::iterator*>>(other.m_table_size);
     m_size = 0;
     m_table_size = other.m_table_size;
     *this += other;
@@ -35,13 +35,41 @@ HashTable::~HashTable()
 
 }
 
+// find the location of the given key in a list of pairs. if not exist throw hash_error::KEY_NOT_FOUND
+std::list<std::list<std::pair<std::string, void*>>::iterator*>::const_iterator find_pair(const std::list<std::list<std::pair<std::string, void*>>::iterator*> &l,const std::string &key)
+{
+    for (auto it = l.begin(); it != l.end(); it++)
+    {
+        if ((* *it)->first == key)
+        {
+            return it;
+        }
+    }
+    throw hash_error::KEY_NOT_FOUND;
+}
+
 
 void HashTable::add(const std::string& key, void* value)
 {
-    auto it = m_keys_values.insert(m_keys_values.begin(), std::pair<std::string, void*>(key, value));
-    auto pit = new std::list<std::pair<std::string, void*>>::iterator(it);
-    m_arr[getIndex(key)] = pit;
-    m_size++;
+    size_t index = getIndex(key);
+    try
+    {
+        auto it = find_pair(m_arr[index], key);
+        (**it)->second = value;
+    }
+    catch (hash_error e)
+    {
+        if (e == hash_error::KEY_NOT_FOUND)
+        {
+            auto it = m_keys_values.insert(m_keys_values.end(), std::pair<std::string, void*>(key, value));
+            auto pit = new std::list<std::pair<std::string, void*>>::iterator(it);
+            m_arr[index].push_back(pit);
+            m_size++;
+
+        }
+    }
+    
+    
 }
 
 // return the index in the arr from the key
@@ -53,13 +81,9 @@ size_t HashTable::getIndex(const std::string&  key) const
 void HashTable::pop(const std::string& key)
 {
     size_t index = getIndex(key);
-    auto pos = m_arr[index];
-    if (pos == nullptr)
-    {
-        throw hash_error::KEY_NOT_FOUND;
-    }
-    m_keys_values.erase(*pos);
-    m_arr[index] = nullptr;
+    auto it = find_pair(m_arr[index], key);
+    m_keys_values.erase(**it);
+    m_arr[index].erase(it);
     m_size--;
     
 }
@@ -67,12 +91,8 @@ void HashTable::pop(const std::string& key)
 void* HashTable::get(const std::string&  key) const
 {
     size_t index = getIndex(key);
-    auto pos = m_arr[index];
-    if (pos == nullptr)
-    {
-        throw hash_error::KEY_NOT_FOUND;
-    }
-    std::pair<std::string, void*> p = **pos;
+    auto it = find_pair(m_arr[index], key);
+    std::pair<std::string, void*> p = ***it;
     return p.second;
     
 }
@@ -89,11 +109,22 @@ const std::string HashTable::getKey(void* value) const
     throw hash_error::KEY_NOT_FOUND;
 }
 
-bool HashTable::isIn(const char*  key) const
+bool HashTable::isIn(const char* key) const
 {
     size_t index = getIndex(key);
-    auto pos = m_arr[index];
-    return pos != nullptr;
+    try
+    {
+        auto it = find_pair(m_arr[index], key);
+        return true;
+    }
+    catch (hash_error e)
+    {
+        if (e == hash_error::KEY_NOT_FOUND)
+        {
+            return false;
+        }
+        return false;
+    }
 }
 
 size_t HashTable::getSize() const

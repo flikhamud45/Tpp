@@ -47,7 +47,7 @@ public:
 
 private:
     // each value will be pointer to the key and value node so we can search for value and go through the keys in O(number of values) and not O(size of arr). we can still get and add in O(1).
-  std::vector<std::list<std::pair<std::string, void*>>::iterator*> m_arr;
+  std::vector<std::list<std::list<std::pair<std::string, void*>>::iterator*>> m_arr;
 
     // linked list of pairs of key and value
   std::list<std::pair<std::string, void*>> m_keys_values;
@@ -60,5 +60,6 @@ private:
 
     // index in the hashtable
   size_t getIndex(const std::string& key) const;
+
 
 };
