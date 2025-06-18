@@ -8,6 +8,8 @@ public:
 
     String(const String &s);
 
+    String(String&& s) noexcept;
+
     // empty string
     String();
 
@@ -18,6 +20,9 @@ public:
     // assume s in null terminated
     String operator+(const char* s);
 
+    String& operator=(const String& other);
+
+    bool operator==(const String& other);
 
     // for printing
     friend std::ostream& operator<<(std::ostream& os, const String& str);

@@ -22,6 +22,12 @@ String::String(const String& s)
     strcpy_s(arr, len+1, s.arr);
 }
 
+String::String(String&& other) noexcept
+{
+    arr = other.arr;     
+    other.arr = nullptr; 
+}
+
 String::~String()
 {
     delete[] arr;
@@ -46,5 +52,19 @@ std::ostream& operator<<(std::ostream& os, const String& str)
 {
     os << str.arr;
     return os;
+}
+
+String& String::operator=(const String& other)
+{
+    delete[] arr;
+    size_t len = strlen(other.arr);
+    arr = new char[len + 1];
+    strcpy_s(arr, len + 1, other.arr);
+    return *this;
+}
+
+bool String::operator==(const String& other)
+{
+    return strcmp(arr, other.arr) == 0;
 }
 
