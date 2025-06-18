@@ -15,10 +15,10 @@ public:
 
     ~String();
 
-    String operator+(String s);
+    String operator+(String &s);
 
     // assume s in null terminated
-    String operator+(const char* s);
+    String operator+(const char*& s);
 
     String& operator=(const String& other);
 

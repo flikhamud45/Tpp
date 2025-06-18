@@ -10,9 +10,17 @@ String::String() : String("")
 
 String::String(const char* s)
 {
-    size_t len = strlen(s);
-    arr = new char[len+1];
-    strcpy_s(arr, len + 1, s);
+    if (s == nullptr)
+    {
+        arr = new char[1];
+        arr[0] = '\0';
+    }
+    else
+    {
+        size_t len = strlen(s);
+        arr = new char[len + 1];
+        strcpy_s(arr, len + 1, s);
+    }
 }
 
 String::String(const String& s)
@@ -33,12 +41,12 @@ String::~String()
     delete[] arr;
 }
 
-String String::operator+(const char* s)
+String String::operator+(const char* &s)
 {
     return *this + String(s);
 }
 
-String String::operator+(String s)
+String String::operator+(String &s)
 {
     char* new_arr = new char[strlen(arr) + strlen(s.arr) + 1];
     strcpy_s(new_arr, strlen(arr)+1, arr);
