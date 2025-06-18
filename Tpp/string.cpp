@@ -46,7 +46,7 @@ String String::operator+(const char* &s)
     return *this + String(s);
 }
 
-String String::operator+(String &s)
+String String::operator+(const String &s)
 {
     char* new_arr = new char[strlen(arr) + strlen(s.arr) + 1];
     strcpy_s(new_arr, strlen(arr)+1, arr);
@@ -62,7 +62,7 @@ std::ostream& operator<<(std::ostream& os, const String& str)
     return os;
 }
 
-String& String::operator=(const String& other)
+String& String::operator=(const String&& other)
 {
     delete[] arr;
     size_t len = strlen(other.arr);
