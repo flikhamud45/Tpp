@@ -1,4 +1,5 @@
 #include "memory.h"
+#include "linked_list.h"
 #include <cstdlib>
 #include <iostream>
 #include <new>
@@ -10,59 +11,8 @@ typedef struct _mem_info_t
 } mem_info_t;
 
 
-typedef struct _node_t
-{
-    struct _node_t* next;
-    struct _node_t* prev;
-    mem_info_t info;
-} node_t;
 
-typedef struct _linked_list_t
-{
-    node_t* start;
-    node_t* end;
-} linked_list_t;
-
-linked_list_t metadata{nullptr, nullptr};
-
-
-void init_metadata()
-{
-    // we add a dummy node to the list
-    metadata.start = static_cast<node_t*>(malloc(sizeof(node_t)));
-    if (metadata.start == nullptr)
-    {
-        throw std::bad_alloc();
-    }
-    metadata.end = metadata.start;
-    metadata.start->next = nullptr;
-    metadata.start->prev = nullptr;
-}
-
-void push_metadata(node_t* n)
-{
-    if (metadata.start == nullptr)
-    {
-        init_metadata();
-    }
-    metadata.end->next = n;
-    n->prev = metadata.end;
-    metadata.end = n;
-    n->next = nullptr;
-}
-
-void pop_metadata(node_t* n)
-{
-    n->prev->next = n->next;
-    if (n->next != nullptr)
-    {
-        n->next->prev = n->prev;
-    }
-    else
-    {
-        metadata.end = n->prev;
-    }
-}
+LinkedList metadata;
 
 void* new_alloc(size_t size)
 {
@@ -72,31 +22,40 @@ void* new_alloc(size_t size)
         throw std::bad_alloc();
     }
     node_t* n = static_cast<node_t*>(p);
-    n->info.size = size;
-    push_metadata(n);
-
+    mem_info_t* info = static_cast<mem_info_t*>(malloc(sizeof(mem_info_t)));
+    if (info == nullptr)
+    {
+        free(p);
+        throw std::bad_alloc();
+    }
+    info->size = size;
+    n->value = info;
+    metadata.push(n);
     return static_cast<void*>(n + 1);
 }
 
 
 void delete_alloc(void* ptr)
 {
+    if (ptr == nullptr)
+    {
+        throw std::bad_alloc();
+    }
     node_t* n = static_cast<node_t*>(ptr) - 1;
-    pop_metadata(n);
-    free(n);
+    metadata.pop(n);
+    
 }
 
 void print_memory()
 {
     std::cout << "memory statistics: ";
-    node_t* curr = metadata.start;
-    size_t i = 0;
+    node_t* curr = metadata.getStart();
     curr = curr->next;
     while (curr != nullptr)
     {
-        std::cout << "mem" << i << " - " << curr->info.size << " bytes, ";
+        mem_info_t* info = static_cast<mem_info_t*>(curr->value);
+        std::cout << "address " << curr+1 << " - " << info->size << " bytes, ";
         curr = curr->next;
-        i++;
     }
     std::cout << "\n";
 }
