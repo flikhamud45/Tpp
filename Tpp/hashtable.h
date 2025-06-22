@@ -14,7 +14,7 @@ typedef enum _hash_error
 class HashTable
 {
 public:
-    HashTable(size_t table_size);
+    HashTable(size_t table_size, size_t max_list_size = 10, size_t m_table_size_factor = 2);
 
     HashTable(const HashTable &h);
 
@@ -44,6 +44,8 @@ public:
 
     bool operator==(const HashTable& other) const;
 
+    size_t getTableSize();
+
 private:
     // each value will be pointer to the key and value node so we can search for value and go through the keys in O(number of values) and not O(size of arr). we can still get and add in O(1).
   std::vector<std::list<std::list<std::pair<std::string, void*>>::iterator*>> m_arr;
@@ -56,6 +58,12 @@ private:
 
     // number of elements
   size_t m_size;
+
+    // the max number of collisions allowed
+  size_t m_max_list_size;
+
+    // the factor to multiply the table_size when having too many collisions.
+  size_t m_table_size_factor;
 
     // index in the hashtable
   size_t getIndex(const std::string& key) const;

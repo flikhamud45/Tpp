@@ -3,15 +3,14 @@
 #include <list>
 #include <vector>
 
-HashTable::HashTable(size_t table_size)
+HashTable::HashTable(size_t table_size, size_t max_list_size, size_t m_table_size_factor) : m_table_size(table_size), m_max_list_size(max_list_size), m_table_size_factor(m_table_size_factor)
 {
     m_arr = std::vector<std::list<std::list<std::pair<std::string, void*>>::iterator*>>(table_size);
     m_size = 0;
-    m_table_size = table_size;
     
 }
 
-HashTable::HashTable(const HashTable& h) : HashTable(h.m_table_size)
+HashTable::HashTable(const HashTable& h) : HashTable(h.m_table_size, h.m_max_list_size, h.m_table_size_factor)
 {
     *this += h;
 }
@@ -66,8 +65,17 @@ void HashTable::add(const std::string& key, void* value)
             m_arr[index].push_back(pit);
             m_size++;
 
+            
         }
     }
+    if (m_arr[index].size() > m_max_list_size)
+    {
+        HashTable h = HashTable(m_table_size * m_table_size_factor, m_max_list_size, m_table_size_factor);
+        h += *this;
+        *this = h; // this will call the move operator
+
+    }
+    
     
     
 }
@@ -163,6 +171,11 @@ bool HashTable::operator==(const HashTable &other) const
         }
     }
     return true;
+}
+
+size_t HashTable::getTableSize()
+{
+    return m_table_size;
 }
 
 

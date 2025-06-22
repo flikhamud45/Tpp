@@ -3,12 +3,21 @@
 
 int main()
 {
-    HashTable h1{2};
-    int n1 = 1, n2 = 2, n3 = 3, n4 = 4;
+    HashTable h1{1, 2};
+    int n1 = 1, n2 = 2, n3 = 3, n4 = 4, n5 = 5, n6 = 6, n7 = 7, n8 = 8;
     h1.add("1", &n1);
     h1.add("2", &n2);
     h1.add("3", &n3);
     h1.add("4", &n4);
+
+    std::cout << h1.getTableSize() << "\n";
+
+    h1.add("5", &n5);
+    h1.add("6", &n6);
+    h1.add("7", &n7);
+    h1.add("8", &n8);
+
+    std::cout << h1.getTableSize() << "\n";
 
     std::cout << *static_cast<int*>(h1.get("1")) << *static_cast<int*>(h1.get("2")) << *static_cast<int*>(h1.get("3"))
               << *static_cast<int*>(h1.get("4")) << "\n";
